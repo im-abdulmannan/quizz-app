@@ -75,7 +75,7 @@ export class Quiz {
     problem.startTime = new Date().getTime();
     problem.submissions = [];
 
-    IoManager.getIo().emit("CHANGE_PROBLEM", {
+    IoManager.getIo().emit("problem", {
       problem,
     });
 
@@ -88,7 +88,7 @@ export class Quiz {
     console.log("send: leaderboard")
     this.currentState = "leaderboard";
     const leaderBoard = this.getLeaderBoard();
-    IoManager.getIo().to(this.roomId).emit("leaderBoard", {
+    IoManager.getIo().to(this.roomId).emit("leaderboard", {
       leaderBoard: leaderBoard,
     });
   }
@@ -100,6 +100,7 @@ export class Quiz {
       problem.startTime = new Date().getTime();
       this.setActiveProblem(problem);
     } else {
+      this.activeProblem--;
       //   IoManager.getIo().emit("QUIZ_END", { problem });
     }
   }
