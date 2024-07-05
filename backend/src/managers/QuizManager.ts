@@ -19,7 +19,7 @@ export class QuizManager {
     problem: {
       title: string;
       description: string;
-      image: string;
+      image?: string;
       options: {
         id: number;
         title: string;
@@ -70,6 +70,7 @@ export class QuizManager {
   }
 
   addQuiz(roomId: string) {
+    if (this.getQuiz(roomId)) return;
     const quiz = new Quiz(roomId);
     this.quizes.push(quiz);
   }
