@@ -57,6 +57,7 @@ export class QuizManager {
   }
 
   getQuiz(roomId: string) {
+    console.log("getting quiz", roomId);
     return this.quizes.find((x) => x.roomId === roomId) ?? null;
   }
 

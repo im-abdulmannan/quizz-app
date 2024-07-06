@@ -55,8 +55,8 @@ export class Quiz {
     console.log(this.roomId);
     console.log(JSON.stringify(this.problems));
     console.log(this.users);
-    console.log(this.currentState)
-    console.log(this.activeProblem)
+    console.log(this.currentState);
+    console.log(this.activeProblem);
   }
 
   addProblem(problem: Problem) {
@@ -70,7 +70,7 @@ export class Quiz {
   }
 
   setActiveProblem(problem: Problem) {
-    console.log("set active problem")
+    console.log("set active problem");
     this.currentState = "question";
     problem.startTime = new Date().getTime();
     problem.submissions = [];
@@ -85,11 +85,11 @@ export class Quiz {
   }
 
   sendLeaderBoard() {
-    console.log("send: leaderboard")
+    console.log("send: leaderboard");
     this.currentState = "leaderboard";
-    const leaderBoard = this.getLeaderBoard();
+    const leaderboard = this.getLeaderBoard();
     IoManager.getIo().to(this.roomId).emit("leaderboard", {
-      leaderBoard: leaderBoard,
+      leaderboard,
     });
   }
 
@@ -134,9 +134,13 @@ export class Quiz {
     problemId: string,
     submission: AllowSubmissions
   ) {
+    console.log("finally submit: " +  userId, roomId, problemId, submission );
     const problem = this.problems.find((p) => p.id === problemId);
+    console.log("🚀 ~ Quiz ~ problem:", this.problems);
     const user = this.users.find((u) => u.id === userId);
+    console.log("🚀 ~ Quiz ~ user:", user);
     if (!problem || !user) {
+      console.log("user or problem not found");
       return;
     }
 
@@ -145,6 +149,7 @@ export class Quiz {
     );
 
     if (existingSubmission) {
+      console.log("existing submission");
       return;
     }
 
@@ -157,7 +162,8 @@ export class Quiz {
 
     user.points +=
       1000 -
-      (500 * (new Date().getTime() - problem.startTime)) / PROBLEM_TIME_SECONDS;
+      (500 * (new Date().getTime() - problem.startTime)) /
+        (PROBLEM_TIME_SECONDS * 1000);
   }
 
   getLeaderBoard() {
@@ -176,14 +182,14 @@ export class Quiz {
     if (this.currentState === "ended") {
       return {
         type: "ended",
-        leaderBoard: this.getLeaderBoard(),
+        leaderboard: this.getLeaderBoard(),
       };
     }
 
     if (this.currentState === "leaderboard") {
       return {
         type: "leaderboard",
-        leaderBoard: this.getLeaderBoard(),
+        leaderboard: this.getLeaderBoard(),
       };
     }
 

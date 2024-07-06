@@ -14,26 +14,36 @@ export class UserManager {
   }
 
   private createHandlers(socket: Socket) {
+    // socket.on("join", (data) => {
+    //   const userId = this.quizManager.addUser(data.roomId, data.name);
+    //   socket.emit("init", {
+    //     userId,
+    //     state: this.quizManager.getCurrentState(data.roomId),
+    //   });
+    //     console.log("🚀 ~ UserManager ~ socket.on ~ userId:", userId)
+
+    //   socket.join(data.roomId);
+    // });
+
     socket.on("join", (data) => {
       const userId = this.quizManager.addUser(data.roomId, data.name);
+      console.log("🚀 ~ UserManager ~ socket.on ~ userId:", userId);
+      if (!userId) {
+        console.error("Error: userId is undefined");
+        return;
+      }
       socket.emit("init", {
         userId,
         state: this.quizManager.getCurrentState(data.roomId),
       });
-
-      socket.join(data.roomId)
+      socket.join(data.roomId);
     });
 
     socket.on("joinAdmin", (data) => {
-      // const userId = this.quizManager.addUser(data.roomId, data.name);
       if (data.password != ADMIN_PASSWORD) {
         return;
       }
       console.log("join admin called");
-      // socket.emit("admin_init", {
-      //   userId,
-      //   state: this.quizManager.getCurrentState(data.roomId),
-      // });
 
       socket.on("createQuiz", (data) => {
         console.log("Create quiz called");
@@ -55,16 +65,29 @@ export class UserManager {
       const userId = data.userId;
       const problemId = data.problemId;
       const submission = data.submission;
-      const roomId = data.submission;
+      const roomId = data.roomId;
+      console.log(
+        "....." +
+          {
+            userId: userId,
+            roomId: roomId,
+            problemId: problemId,
+            submission: submission,
+          }
+      );
       if (
-        submission != 0 ||
-        submission != 1 ||
-        submission != 2 ||
+        submission != 0 &&
+        submission != 1 &&
+        submission != 2 &&
         submission != 3
       ) {
         console.log("Invalid submission!!! " + submission);
         return;
       }
+
+      console.log("submission test passed");
+
+      console.log("finally submit: " + userId, roomId, problemId, submission);
 
       this.quizManager.submit(userId, roomId, problemId, submission);
     });
