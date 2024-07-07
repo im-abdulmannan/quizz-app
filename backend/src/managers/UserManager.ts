@@ -31,6 +31,7 @@ export class UserManager {
       if (data.password != ADMIN_PASSWORD) {
         return;
       }
+      console.log("Admin joined")
 
       socket.on("createQuiz", (data) => {
         this.quizManager.addQuiz(data.roomId);

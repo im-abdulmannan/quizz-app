@@ -17,14 +17,11 @@ const User = () => {
               <h1 className="text-2xl font-semibold mb-2 text-slate-600">
                 Enter the code to join
               </h1>
-              <p className="text-gray-600">
-                It’s on the screen in front of you
-              </p>
             </div>
             <div className="mb-8">
               <input
-                className="text-center w-64 p-2 border-2 border-purple-600 rounded-lg shadow-sm focus:outline-none focus:border-purple-800"
-                placeholder="1234 5678"
+                className="text-center font-medium text-slate-600 w-64 p-2 border-2 border-purple-600 rounded-lg shadow-sm focus:outline-none focus:border-purple-800"
+                placeholder="****"
                 style={{ fontSize: "1rem" }}
                 type="text"
                 onChange={(e) => {
@@ -33,8 +30,8 @@ const User = () => {
               />
               <br /> <br />
               <input
-                className="text-center w-64 p-2 border-2 border-purple-600 rounded-lg shadow-sm focus:outline-none focus:border-purple-800"
-                placeholder="Your name"
+                className="text-center font-medium text-slate-600 w-64 p-2 border-2 border-purple-600 rounded-lg shadow-sm focus:outline-none focus:border-purple-800"
+                placeholder="John Doe"
                 style={{ fontSize: "1rem" }}
                 type="text"
                 onChange={(e) => {
@@ -64,6 +61,7 @@ interface QuizQuestion {
   id: string;
   description: string;
   options: string[];
+  title: string;
 }
 
 interface LeaderboardItem {
@@ -75,9 +73,7 @@ interface LeaderboardItem {
 const UserLoggedin = ({ code, name }: { name: string; code: string }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [currentState, setCurrentState] = useState("not_started");
-  const [currentQuestion, setCurrentQuestion] = useState<QuizQuestion | null>(
-    null
-  );
+  const [currentQuestion, setCurrentQuestion] = useState<QuizQuestion>();
   const [leaderboard, setLeaderboard] = useState<LeaderboardItem[]>([]);
   const [userId, setUserId] = useState("");
   const roomId = code;
@@ -133,16 +129,19 @@ const UserLoggedin = ({ code, name }: { name: string; code: string }) => {
 
   if (currentState === "question" && currentQuestion) {
     return (
-      <Quiz
-        roomId={roomId}
-        userId={userId}
-        problemId={currentQuestion.id}
-        quizData={{
-          title: currentQuestion.description,
-          options: currentQuestion.options,
-        }}
-        socket={socket}
-      />
+      <>
+        <Quiz
+        roomTitle={currentQuestion.title}
+          roomId={roomId}
+          userId={userId}
+          problemId={currentQuestion.id}
+          quizData={{
+            title: currentQuestion.description,
+            options: currentQuestion.options,
+          }}
+          socket={socket}
+        />
+      </>
     );
   }
 
