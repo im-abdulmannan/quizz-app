@@ -9,11 +9,11 @@ export function LeaderBoard({leaderboardData}: {
 }) {
 
     return (
-        <div className="bg-opacity-20 bg-white backdrop-blur-5 border border-opacity-30 border-solid border-white p-6 rounded-lg shadow-md">
-            <h1 className="text-2xl text-center my-4 text-white">
+        <div className="bg-gray-100 h-screen">
+            <h1 className="text-2xl font-semibold text-center text-slate-600 drop-shadow-lg py-10">
                 Leaderboard Results 🚀
             </h1>
-            <div className="">
+            <div className="w-[60%] mx-auto px-12">
                     {leaderboardData.map((el, index) => (
                         <div className=" flex justify-center">
                             <Card

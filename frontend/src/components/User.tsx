@@ -129,19 +129,17 @@ const UserLoggedin = ({ code, name }: { name: string; code: string }) => {
 
   if (currentState === "question" && currentQuestion) {
     return (
-      <>
-        <Quiz
+      <Quiz
         roomTitle={currentQuestion.title}
-          roomId={roomId}
-          userId={userId}
-          problemId={currentQuestion.id}
-          quizData={{
-            title: currentQuestion.description,
-            options: currentQuestion.options,
-          }}
-          socket={socket}
-        />
-      </>
+        roomId={roomId}
+        userId={userId}
+        problemId={currentQuestion.id}
+        quizData={{
+          title: currentQuestion.description,
+          options: currentQuestion.options,
+        }}
+        socket={socket}
+      />
     );
   }
 
@@ -157,7 +155,15 @@ const UserLoggedin = ({ code, name }: { name: string; code: string }) => {
     );
   }
 
-  return <div>Quiz has ended</div>;
+  return (
+    <div className="h-screen flex items-center justify-center">
+      <p className="text-2xl text-slate-600">
+        Hey, <span className="font-medium">{name}</span>
+        <br />
+        Thanks for joining us, the quiz has been ended
+      </p>
+    </div>
+  );
 };
 
 export default User;
