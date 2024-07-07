@@ -41,7 +41,7 @@ export class Quiz {
   constructor(roomId: string) {
     this.roomId = roomId;
     this.hasStarted = false;
-    this.activeProblem = 0;
+    this.activeProblem = -1;
     this.problems = [];
     this.users = [];
     this.currentState = "not_started";
@@ -94,7 +94,11 @@ export class Quiz {
   }
 
   next() {
-    this.activeProblem++;
+    if (this.activeProblem == -1) {
+      this.activeProblem = 0;
+    } else {
+      this.activeProblem++;
+    }
     const problem = this.problems[this.activeProblem];
     if (problem) {
       problem.startTime = new Date().getTime();
@@ -134,7 +138,7 @@ export class Quiz {
     problemId: string,
     submission: AllowSubmissions
   ) {
-    console.log("finally submit: " +  userId, roomId, problemId, submission );
+    console.log("finally submit: " + userId, roomId, problemId, submission);
     const problem = this.problems.find((p) => p.id === problemId);
     console.log("🚀 ~ Quiz ~ problem:", this.problems);
     const user = this.users.find((u) => u.id === userId);
