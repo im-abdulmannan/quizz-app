@@ -6,7 +6,6 @@ import { Quiz } from "./Quiz";
 const User = () => {
   const [name, setName] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  console.log("🚀 ~ User ~ submitted:", submitted);
   const [code, setCode] = useState("");
 
   if (!submitted) {
@@ -81,7 +80,6 @@ const UserLoggedin = ({ code, name }: { name: string; code: string }) => {
   );
   const [leaderboard, setLeaderboard] = useState<LeaderboardItem[]>([]);
   const [userId, setUserId] = useState("");
-  console.log("🚀 ~ UserLoggedin ~ userId:", userId)
   const roomId = code;
 
   useEffect(() => {
@@ -109,44 +107,28 @@ const UserLoggedin = ({ code, name }: { name: string; code: string }) => {
       }
       setCurrentState(state.type);
     });
-  
+
     socket.on("leaderboard", (data) => {
       setCurrentState("leaderboard");
       setLeaderboard(data.leaderboard);
     });
-  
+
     socket.on("problem", (data) => {
       setCurrentState("question");
       setCurrentQuestion(data.problem);
     });
-
-    // socket.on("init", ({ userId, state }) => {
-    //   setUserId(userId);
-
-    //   if (state.leaderboard) {
-    //     setLeaderboard(state.leaderboard);
-    //   }
-
-    //   if (state.problem) {
-    //     setCurrentQuestion(state.problem);
-    //   }
-
-    //   setCurrentState(state.type);
-    // });
-
-    // socket.on("leaderboard", (data) => {
-    //   setCurrentState("leaderboard");
-    //   setLeaderboard(data.leaderboard);
-    // });
-
-    // socket.on("problem", (data) => {
-    //   setCurrentState("question");
-    //   setCurrentQuestion(data.problem);
-    // });
   }, [name, roomId]);
 
   if (currentState === "not_started") {
-    return <div>This quiz is not started</div>;
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <p className="text-2xl text-slate-600">
+          Hey, <span className="font-medium">{name}</span>
+          <br />
+          Please wait for the host to start the quiz...
+        </p>
+      </div>
+    );
   }
 
   if (currentState === "question" && currentQuestion) {
@@ -164,21 +146,6 @@ const UserLoggedin = ({ code, name }: { name: string; code: string }) => {
     );
   }
 
-  // if (currentState === "question") {
-  //   return (
-  //     <Quiz
-  //       roomId={roomId}
-  //       userId={userId}
-  //       problemId={currentQuestion.id}
-  //       quizData={{
-  //         title: currentQuestion.description,
-  //         options: currentQuestion.options,
-  //       }}
-  //       socket={socket}
-  //     />
-  //   );
-  // }
-
   if (currentState === "leaderboard") {
     return (
       <LeaderBoard
@@ -190,18 +157,6 @@ const UserLoggedin = ({ code, name }: { name: string; code: string }) => {
       />
     );
   }
-
-  // if (currentState === "leaderboard") {
-  //   return (
-  //     <LeaderBoard
-  //       leaderboardData={leaderboard.map((x: any) => ({
-  //         points: x.points,
-  //         username: x.name,
-  //         image: x.image,
-  //       }))}
-  //     />
-  //   );
-  // }
 
   return <div>Quiz has ended</div>;
 };

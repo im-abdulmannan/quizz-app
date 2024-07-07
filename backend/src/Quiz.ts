@@ -61,7 +61,6 @@ export class Quiz {
 
   addProblem(problem: Problem) {
     this.problems.push(problem);
-    console.log(this.problems);
   }
 
   start() {
@@ -70,7 +69,6 @@ export class Quiz {
   }
 
   setActiveProblem(problem: Problem) {
-    console.log("set active problem");
     this.currentState = "question";
     problem.startTime = new Date().getTime();
     problem.submissions = [];
@@ -85,7 +83,6 @@ export class Quiz {
   }
 
   sendLeaderBoard() {
-    console.log("send: leaderboard");
     this.currentState = "leaderboard";
     const leaderboard = this.getLeaderBoard();
     IoManager.getIo().to(this.roomId).emit("leaderboard", {
@@ -138,11 +135,8 @@ export class Quiz {
     problemId: string,
     submission: AllowSubmissions
   ) {
-    console.log("finally submit: " + userId, roomId, problemId, submission);
     const problem = this.problems.find((p) => p.id === problemId);
-    console.log("🚀 ~ Quiz ~ problem:", this.problems);
     const user = this.users.find((u) => u.id === userId);
-    console.log("🚀 ~ Quiz ~ user:", user);
     if (!problem || !user) {
       console.log("user or problem not found");
       return;
@@ -153,7 +147,6 @@ export class Quiz {
     );
 
     if (existingSubmission) {
-      console.log("existing submission");
       return;
     }
 

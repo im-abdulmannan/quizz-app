@@ -24,12 +24,9 @@ export function Quiz({
   userId: string;
   problemId: string;
 }) {
-  console.log("🚀 ~ userId:", userId)
   const [submitted, setSubmitted] = useState(false);
-  console.log("🚀 ~ submitted:", submitted);
   const [submission, setSubmission] = useState(0);
-  console.log("🚀 ~ submission:", submission);
-
+  
   return (
     <div className="h-screen">
       <div className="flex w-full justify-center">
@@ -75,7 +72,6 @@ function SingleQuiz({
   imageURL,
   setSelected,
 }: SingleQuizProps) {
-  console.log("🚀 ~ choices:", choices)
   return (
     <article>
       <h4 className="mt-10 text-xl">Question</h4>
