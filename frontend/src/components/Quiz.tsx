@@ -1,6 +1,10 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { Socket } from "socket.io-client";
 
+type Option = {
+  title: string;
+}
+
 export function Quiz({
   roomTitle,
   quizData,
@@ -12,7 +16,7 @@ export function Quiz({
   roomTitle: string;
   quizData: {
     title: string;
-    options: string[];
+    options: Option[];
   };
   socket: Socket | null;
   roomId: string;
@@ -23,7 +27,6 @@ export function Quiz({
   const [submission, setSubmission] = useState(0);
 
   return (
-    // <div className="h-screen">
     <div className="bg-gray-100 h-screen flex justify-center">
       <div className="flex w-[50%] justify-center mt-10">
         <div className="w-96">

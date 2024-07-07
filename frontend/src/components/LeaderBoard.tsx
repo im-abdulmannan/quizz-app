@@ -1,10 +1,9 @@
-
-const LeaderBoard = ({leaderboard}: {leaderboard: any}) => {
-  return (
-    <div>
-        {JSON.stringify(leaderboard)}
-    </div>
-  )
+interface Leaderboard {
+  users: [];
 }
 
-export default LeaderBoard
+const LeaderBoard = ({ leaderboard }: { leaderboard: Leaderboard }) => {
+  return <div>{JSON.stringify(leaderboard)}</div>;
+};
+
+export default LeaderBoard;

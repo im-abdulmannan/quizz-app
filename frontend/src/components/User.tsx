@@ -57,10 +57,15 @@ const User = () => {
   return <UserLoggedin code={code} name={name} />;
 };
 
+type Option = {
+  title: string;
+  options: [];
+};
+
 interface QuizQuestion {
   id: string;
   description: string;
-  options: string[];
+  options: Option[];
   title: string;
 }
 

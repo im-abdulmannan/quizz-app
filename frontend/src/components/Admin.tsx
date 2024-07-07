@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import CreateProblem from "./CreateProblem";
 import QuizControls from "./QuizControls";
 
 const Admin = () => {
-  const [socket, setSocket] = useState<Socket>(null);
+  const [socket, setSocket] = useState<Socket | null>(null);
   const [quizId, setQuizId] = useState("");
   const [roomId, setRoomId] = useState("");
   const [isValid, setIsValid] = useState(false);
@@ -18,11 +18,9 @@ const Admin = () => {
         password: "ADMIN_PASSWORD",
       });
     });
-
-    // socket.on("")
   }, []);
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setRoomId(value);
     setIsValid(value.length >= 4 && value.length <= 4);
@@ -32,7 +30,7 @@ const Admin = () => {
     if (!isValid) {
       return alert("Invalid room ID!");
     }
-    socket.emit("createQuiz", {
+    socket?.emit("createQuiz", {
       roomId,
     });
     setQuizId(roomId);

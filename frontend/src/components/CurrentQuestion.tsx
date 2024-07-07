@@ -1,6 +1,10 @@
 
+interface Question {
+  id: number;
+  title: string;
+}
 
-const CurrentQuestion = ({question}: {question: any}) => {
+const CurrentQuestion = ({question}: {question: Question}) => {
   return (
     <div>
         {JSON.stringify(question)}
