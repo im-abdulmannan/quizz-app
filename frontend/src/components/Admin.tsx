@@ -10,7 +10,7 @@ const Admin = () => {
   const [isValid, setIsValid] = useState(false);
 
   useEffect(() => {
-    const socket = io("https://quiz-app-backend-ecru.vercel.app/");
+    const socket = io("http://localhost:3000");
     setSocket(socket);
     socket.on("connect", () => {
       console.log(socket.id);

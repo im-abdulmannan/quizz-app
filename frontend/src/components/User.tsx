@@ -84,7 +84,7 @@ const UserLoggedin = ({ code, name }: { name: string; code: string }) => {
   const roomId = code;
 
   useEffect(() => {
-    const socket = io("https://quiz-app-backend-ecru.vercel.app/");
+    const socket = io("http://localhost:3000");
     socketRef.current = socket;
 
     socket.on("connect", () => {
