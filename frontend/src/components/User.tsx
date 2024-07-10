@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { LeaderBoard } from "./leaderboard/Leaderboard";
 import { Quiz } from "./Quiz";
@@ -76,7 +76,7 @@ interface LeaderboardItem {
 }
 
 const UserLoggedin = ({ code, name }: { name: string; code: string }) => {
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const socketRef = useRef<Socket | null>(null);
   const [currentState, setCurrentState] = useState("not_started");
   const [currentQuestion, setCurrentQuestion] = useState<QuizQuestion>();
   const [leaderboard, setLeaderboard] = useState<LeaderboardItem[]>([]);
@@ -85,7 +85,8 @@ const UserLoggedin = ({ code, name }: { name: string; code: string }) => {
 
   useEffect(() => {
     const socket = io("http://localhost:3000");
-    setSocket(socket);
+    socketRef.current = socket;
+
     socket.on("connect", () => {
       console.log(socket.id);
       socket.emit("join", {
@@ -95,10 +96,6 @@ const UserLoggedin = ({ code, name }: { name: string; code: string }) => {
     });
 
     socket.on("init", ({ userId, state }) => {
-      if (!userId) {
-        console.error("Error: userId is undefined in init event");
-        return;
-      }
       setUserId(userId);
       if (state.leaderboard) {
         setLeaderboard(state.leaderboard);
@@ -118,7 +115,15 @@ const UserLoggedin = ({ code, name }: { name: string; code: string }) => {
       setCurrentState("question");
       setCurrentQuestion(data.problem);
     });
-  }, [name, roomId]);
+
+    return () => {
+      socket.off("connect");
+      socket.off("init");
+      socket.off("leaderboard");
+      socket.off("problem");
+      socket.disconnect();
+    };
+  }, [roomId, name]);
 
   if (currentState === "not_started") {
     return (
@@ -143,7 +148,7 @@ const UserLoggedin = ({ code, name }: { name: string; code: string }) => {
           title: currentQuestion.description,
           options: currentQuestion.options,
         }}
-        socket={socket}
+        socket={socketRef.current}
       />
     );
   }

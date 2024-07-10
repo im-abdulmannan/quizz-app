@@ -157,10 +157,12 @@ export class Quiz {
       optionSelected: submission,
     });
 
-    user.points +=
-      1000 -
-      (500 * (new Date().getTime() - problem.startTime)) /
-        (PROBLEM_TIME_SECONDS * 1000);
+    if (problem.answer === submission) {
+      user.points +=
+        1000 -
+        (500 * (new Date().getTime() - problem.startTime)) /
+          (PROBLEM_TIME_SECONDS * 1000);
+    }
   }
 
   getLeaderBoard() {
