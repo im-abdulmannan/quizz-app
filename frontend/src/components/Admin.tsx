@@ -28,7 +28,7 @@ const Admin = () => {
 
   const handleSubmit = () => {
     if (!isValid) {
-      return alert("Invalid room ID!");
+      return alert("Room ID length must be 4!");
     }
     socket?.emit("createQuiz", {
       roomId,
